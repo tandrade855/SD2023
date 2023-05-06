@@ -1,5 +1,8 @@
+import pygame
+
+
 class Rocket:
-    def __init__(self, x, y,health=100):
+    def __init__(self, x, y, health=100):
         self.x = x
         self.y = y
         self.health = health
@@ -9,10 +12,13 @@ class Rocket:
         self.cool_down_counter = 0
 
     def draw(self, window):
-        window.blit(self.ship_img,(self.x, self.y))
+        window.blit(self.ship_img, (self.x, self.y))
 
     def get_width(self):
         return self.ship_img.get_width()
 
     def get_height(self):
         return self.ship_img.get_height()
+
+    def shape(self):
+        return pygame.Rect(self.x, self.y, self.get_width(), self.get_height())

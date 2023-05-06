@@ -1,10 +1,11 @@
+from player import Player
+from asteroid import Asteroid
 import pygame
 import os
 import time
 import random
 pygame.font.init()
-from player import Player
-from asteroid import Asteroid
+
 
 WIDTH, HEIGHT = 750, 750
 win = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,7 +14,8 @@ pygame.display.set_caption("Asteroid Destroyer")
 
 # Load Images
 
-BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("images","background-black.png")), (WIDTH,HEIGHT))
+BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("images",
+                                                                   "background-black.png")), (WIDTH, HEIGHT))
 
 
 class GameMechanics:
@@ -65,11 +67,14 @@ class GameMechanics:
             if asteroid.y + asteroid.get_height() > HEIGHT:
                 self.lives -= 1
                 self.asteroids.remove(asteroid)
+            if asteroid.shape().colliderect(self.player.shape()):
+                self.lives -= 1
+                self.asteroids.remove(asteroid)
 
     def redraw_window(self):
-        win.blit(BACKGROUND, (0,0))
+        win.blit(BACKGROUND, (0, 0))
         lives_label = pygame.font.SysFont("comicsans", 40).render(f"Vidas: {self.lives}", 1, (255,255,255))
-        win.blit(lives_label, (580,10))
+        win.blit(lives_label, (580, 10))
 
         for asteroid in self.asteroids:
             asteroid.draw(win)
