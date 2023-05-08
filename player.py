@@ -2,8 +2,8 @@ from rocket import Rocket
 import pygame
 import os
 
-SPACE_SHIP = pygame.image.load(os.path.join("images","spaceRocket.png"))
-RED_LASER = pygame.image.load(os.path.join("images","red_laser.png"))
+SPACE_SHIP = pygame.image.load(os.path.join("images", "spaceRocket.png"))
+RED_LASER = pygame.image.load(os.path.join("images", "red_laser.png"))
 
 
 class Player(Rocket):
@@ -12,6 +12,9 @@ class Player(Rocket):
         self.ship_img = SPACE_SHIP
         self.laser_img = RED_LASER
         self.mask = pygame.mask.from_surface(self.ship_img)
+        self.mask = pygame.mask.from_surface(self.laser_img)
         self.max_health = health
+
+
 
 
