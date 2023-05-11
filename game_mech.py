@@ -58,15 +58,12 @@ class GameMechanics:
             self.player.x -= self.player_vel
         if keys[pygame.K_d] and self.player.x + self.player_vel + self.player.get_width() < WIDTH: #right
             self.player.x += self.player_vel
-        if keys[pygame.K_w] and self.player.y - self.player_vel > 0: #up
-            self.player.y -= self.player_vel
-        if keys[pygame.K_s] and self.player.y + self.player_vel + self.player.get_height() < HEIGHT: #down
-            self.player.y += self.player_vel
         if keys[pygame.K_SPACE]:
             self.player.laser_x = self.player.x + 3
             self.player.laser_y = self.player.y - self.player.get_height()/2 - 10
 
         self.player.laser_y -= self.laser_vel
+
         if self.player.laser_y < 0:
             self.player.laser_y = - 300 # temporário, tirar quando se resolver os diferentes lasers
 
