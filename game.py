@@ -21,7 +21,6 @@ class GameOps:
         self.wave_length = 5
         self.asteroid_vel = 1
         self.player = Player(300, 650)
-        self.lost = False
 
     def verify_movement(self, direction, obj):
         if direction == "esquerda" and obj == "ship" and self.player.x - self.player_vel > 0:

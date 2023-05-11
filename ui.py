@@ -1,9 +1,10 @@
-from player import Player
-from asteroid import Asteroid
+from client_stub import StubClient
 import pygame
 import os
 import time
 import random
+import constante
+
 pygame.font.init()
 
 
@@ -17,43 +18,41 @@ pygame.display.set_caption("Asteroid Destroyer")
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("images",
                                                                    "background-black.png")), (WIDTH, HEIGHT))
 
+SPACE_SHIP = pygame.image.load(os.path.join("images", "spaceRocket.png"))
+RED_LASER = pygame.image.load(os.path.join("images", "red_laser.png"))
+
+#tratamento dos asteroides
+SMALL = pygame.image.load(os.path.join("images", "asteroid50.png"))
+MEDIUM = pygame.image.load(os.path.join("images", "asteroid75.png"))
+BIG = pygame.image.load(os.path.join("images", "asteroid100.png"))
+
 class Ui:
-    def __init__(self):
-        self.run = True
-        self.FPS = 60
-        self.lives = 5
-        self.player_vel = 5
-        self.laser_vel = 3
-        self.asteroids = []
-        self.wave_lenght = 5
-        self.asteroid_vel = 1
-        self.player = Player(300, 650)
-        self.clock = pygame.time.Clock()
-        self.lost = False
+    def __init__(self, stb_obj: StubClient):
+        self.stb_obj = stb_obj
 
-    def update_positions(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
-            #manda para o servidor "esquerda"
-        if keys[pygame.K_d] and self.player.x + self.player_vel + self.player.get_width() < WIDTH:  # right
-            self.player.x += self.player_vel
-        if keys[pygame.K_SPACE]:
-            self.player.laser_x = self.player.x + 3
-            self.player.laser_y = self.player.y - self.player.get_height() / 2 - 10
+    def run(self):
+        dados: str = ""
+        self.stb_obj.initial_data()
+        player = self.stb_obj.player
+        asteroids = self.stb_obj.asteroids
+        laser = self.stb_obj.laser
+        lives = self.stb_obj.lives
+        while dados != constante.FIM:
+            self.redraw_window()
 
-        self.player.laser_y -= self.laser_vel
+    def redraw_window(self, player, asteroids, lives, laser):
+        win.blit(BACKGROUND, (0, 0))
+        lives_label = pygame.font.SysFont("comicsans", 40).render(f"Vidas: {lives}", 1, (255, 255, 255))
+        win.blit(lives_label, (580, 10))
 
-        if self.player.laser_y < 0:
-            self.player.laser_y = - 300  # temporário, tirar quando se resolver os diferentes lasers
+        for asteroid in asteroids:
+            asteroid.draw(win)
 
-        for asteroid in self.asteroids[:]:
-            asteroid.move(self.asteroid_vel)
-            if asteroid.y + asteroid.get_height() > HEIGHT:
-                self.lives -= 1
-                self.asteroids.remove(asteroid)
-            if asteroid.shape().colliderect(self.player.shape()):
-                self.lives -= 1
-                self.asteroids.remove(asteroid)
-            if asteroid.shape().colliderect(self.player.shape_laser()):
-                self.asteroids.remove(asteroid)
-                self.player.laser_y = -300
+        win.blit(SPACE_SHIP, (player[0], player[1]))
+        self.player.draw_laser(win)
+
+        if self.lost:
+            end_label = pygame.font.SysFont("comicsans", 60).render("Perdeu!!", 1, (255, 255, 255))
+            win.blit(end_label, (WIDTH/2 - end_label.get_width()/2, 350))
+
+        pygame.display.update()
