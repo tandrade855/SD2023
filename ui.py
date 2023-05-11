@@ -21,7 +21,6 @@ BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("images",
 SPACE_SHIP = pygame.image.load(os.path.join("images", "spaceRocket.png"))
 RED_LASER = pygame.image.load(os.path.join("images", "red_laser.png"))
 
-#tratamento dos asteroides
 SMALL = pygame.image.load(os.path.join("images", "asteroid50.png"))
 MEDIUM = pygame.image.load(os.path.join("images", "asteroid75.png"))
 BIG = pygame.image.load(os.path.join("images", "asteroid100.png"))
@@ -56,3 +55,20 @@ class Ui:
             win.blit(end_label, (WIDTH/2 - end_label.get_width()/2, 350))
 
         pygame.display.update()
+
+    def draw_ship(self):
+        ship_img = SPACE_SHIP
+        pygame.mask.from_surface(ship_img)
+
+    def draw_laser(self):
+        laser_img = RED_LASER
+        mask = pygame.mask.from_surface(laser_img)
+
+    def draw_asteroid(self, size):
+        size_map = {
+            "small": SMALL,
+            "medium": MEDIUM,
+            "big": BIG
+        }
+        ast = size_map[size]
+        mask = pygame.mask.from_surface(ast)
