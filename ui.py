@@ -36,6 +36,9 @@ class Ui:
         asteroids = self.stb_obj.asteroids
         laser = self.stb_obj.laser
         lives = self.stb_obj.lives
+        self.laser()
+        self.asteroid()
+        self.ship()
         while dados != constante.FIM:
             self.redraw_window()
 
@@ -45,10 +48,10 @@ class Ui:
         win.blit(lives_label, (580, 10))
 
         for asteroid in asteroids:
-            asteroid.draw(win)
+            win.blit(self.ship_img, (asteroid[0], asteroid[1]))
 
         win.blit(SPACE_SHIP, (player[0], player[1]))
-        self.player.draw_laser(win)
+        self.player.laser(win)
 
         if self.lost:
             end_label = pygame.font.SysFont("comicsans", 60).render("Perdeu!!", 1, (255, 255, 255))
@@ -56,15 +59,15 @@ class Ui:
 
         pygame.display.update()
 
-    def draw_ship(self):
+    def ship(self):
         ship_img = SPACE_SHIP
         pygame.mask.from_surface(ship_img)
 
-    def draw_laser(self):
+    def laser(self):
         laser_img = RED_LASER
         mask = pygame.mask.from_surface(laser_img)
 
-    def draw_asteroid(self, size):
+    def asteroid(self, size):
         size_map = {
             "small": SMALL,
             "medium": MEDIUM,
