@@ -48,7 +48,7 @@ class GameOps:
                 self.asteroids.remove(asteroid)
 
     def player(self):
-        return self.player
+        return self.player.x, self.player.y
 
     def life(self):
         return self.lives
