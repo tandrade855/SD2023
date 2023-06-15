@@ -115,4 +115,7 @@ class Ui:
         lives_label = pygame.font.SysFont("comicsans", 40).render(f"Vidas: {lives}", 1, LIVES_COLOR)
         self.win.blit(lives_label, LIVES_POSITION)
 
+    def run(self):
+        pass
+
 

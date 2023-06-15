@@ -48,7 +48,6 @@ class GameMechanics:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.run = False
-
             self.update_positions()
             self.redraw_window()
 

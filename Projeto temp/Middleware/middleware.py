@@ -21,9 +21,9 @@ class GameMiddleware:
 
     def process_input(self, player, data):
         print(f"Received from {player.name}: {data}")
-        self.notify_players()
+        self.send_data()
 
-    def notify_players(self, player=None):
+    def send_data(self, player=None):
         # mandar os dados a cada jogador
         if player is None:
             game_state_json = json.dumps(self.game_state)
@@ -35,16 +35,16 @@ class GameMiddleware:
                 if player.name == player:
                     player.socket.send(game_state_json.encode())
 
-    def player_notification(self, player=None):
-        #a fazer este
+    def player_data(self, player=None):
+        data = {}
         if player is None:
             for player in self.players:
                 data = json.loads(player.socket.recv(1024).decode())
         else:
-            game_state_json = json.dumps(self.game_state)
             for player in self.players:
                 if player.name == player:
-                    player.socket.send(game_state_json.encode())
+                    json.loads(player.socket.recv(1024).decode())
+        return data
 
     def send_msg(self, player_name, message: str):
         for player in self.players:
