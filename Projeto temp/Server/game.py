@@ -5,7 +5,7 @@ import random
 
 class Game:
 
-    def __init__(self, *players: dict):
+    def __init__(self):
         self.FPS = FPS
         self.lives = 5
         self.player_vel = 5
@@ -16,9 +16,9 @@ class Game:
         self.clock = time.Clock()
         self.lost = False
         self.laser = [WIDTH + 1500, HEIGHT + 1500, "laser"]
-        self.players = {}
-        for player in players:
-            self.players[player["name"]] = player["position"]
+        self.players = {"Player 1": PLAYER1,
+                        "Player 2": PLAYER2
+                        }
 
     def tick(self):
         self.clock.tick(FPS)

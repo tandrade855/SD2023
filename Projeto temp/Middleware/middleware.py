@@ -1,4 +1,4 @@
-import json
+import pickle
 
 
 class GameMiddleware:
@@ -19,48 +19,43 @@ class GameMiddleware:
             'lives': {player.name: 5 for player in self.players}
         }
 
-    def process_input(self, player, data):
-        print(f"Received from {player.name}: {data}")
-        self.send_data()
-
-    def send_data(self, player=None):
+    def send_data(self, data, player=None):
         # mandar os dados a cada jogador
+        print(data)
         if player is None:
-            game_state_json = json.dumps(self.game_state)
+            game_state_json = pickle.dumps(data)
             for player in self.players:
-                player.socket.send(game_state_json.encode())
+                player.socket.sendall()
         else:
-            game_state_json = json.dumps(self.game_state)
-            for player in self.players:
-                if player.name == player:
-                    player.socket.send(game_state_json.encode())
+            game_state_json = pickle.dumps(data)
+            for players in self.players:
+                if players.name == player.name:
+                    player.socket.sendall()
 
     def player_data(self, player=None):
         data = {}
         if player is None:
             for player in self.players:
-                data = json.loads(player.socket.recv(1024).decode())
+                data = pickle.loads(player.socket.recv(1024).decode())
         else:
-            for player in self.players:
-                if player.name == player:
-                    json.loads(player.socket.recv(1024).decode())
+            for players in self.players:
+                if players.name == player.name:
+                    pickle.loads(player.socket.recv(1024).decode())
         return data
 
-    def send_msg(self, player_name, message: str):
-        for player in self.players:
-            if player == player_name:
+    def send_msg(self, message: str, player=None):
+        if player is None:
+            for player in self.players:
                 player.socket.send(message.encode())
+        elif player in self.players:
+            player.socket.send(message.encode())
 
-    def receive_msg(self, player_name):
+    def receive_msg(self, player=None):
         message = ""
-        for player in self.players:
-            if player == player_name:
+        if player is None:
+            for player in self.players:
                 message = player.socket.recv(1024).decode()
+        elif player in self.players:
+            player.socket.recv(1024).decode()
         return message
-
-
-class Player:
-    def __init__(self, name, socket):
-        self.name = name
-        self.socket = socket
 

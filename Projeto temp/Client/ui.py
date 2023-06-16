@@ -1,12 +1,13 @@
 from Client import *
 import pygame
 import os
+from stub import GameStub
 
 
 class Ui:
 
-    def __init__(self, stub):
-        self.stub = stub
+    def __init__(self, stub: GameStub):
+        pygame.font.init()
         self.win = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Asteroid Destroyer")
         self.background = pygame.transform.scale(pygame.image.load(os.path.join
@@ -16,6 +17,8 @@ class Ui:
         self.asteroid_small_img = pygame.image.load(os.path.join("images", "asteroid50.png"))
         self.asteroid_medium_img = pygame.image.load(os.path.join("images", "asteroid75.png"))
         self.asteroid_big_img = pygame.image.load(os.path.join("images", "asteroid100.png"))
+        self.stub = stub
+        self.stub.connect(HOST, PORT)
 
     def draw_player(self, x: int, y: int):
         """
@@ -115,7 +118,87 @@ class Ui:
         lives_label = pygame.font.SysFont("comicsans", 40).render(f"Vidas: {lives}", 1, LIVES_COLOR)
         self.win.blit(lives_label, LIVES_POSITION)
 
+    def redraw_window(self, lives, asteroids, player, laser):
+        print(lives, asteroids, player, laser)
+        self.win.blit(self.background, (0, 0))
+        lives_label = pygame.font.SysFont("comicsans", 40).render(f"Vidas: {lives}", 1, (255, 255, 255))
+        self.win.blit(lives_label, (580, 10))
+
+        for asteroid in asteroids:
+            if asteroid[2] == "small":
+                self.draw_asteroid_small(asteroid[0], asteroid[1])
+            if asteroid[2] == "medium":
+                self.draw_asteroid_medium(asteroid[0], asteroid[1])
+            if asteroid[2] == "big":
+                self.draw_asteroid_big(asteroid[0], asteroid[1])
+
+        self.draw_player(player[0], player[1])
+        self.draw_laser(laser[0], laser[1])
+
+        pygame.display.update()
+
     def run(self):
-        pass
+        print(self.stub.player_id)
+        # sending sprite image info to the server
+        self.stub.send_data_server([self.player_img.get_width(), self.player_img.get_height()])
+        self.stub.receive_msg_server()
+
+        run = True
+        while run:
+            self.stub.send_msg_server("lives")
+            lives = self.stub.receive_data_server()
+            print(lives)
+
+            self.stub.send_msg_server("player_location")
+            player = self.stub.receive_data_server()
+            print(player)
+
+            self.stub.send_msg_server("asteroids")
+            asteroids = self.stub.receive_data_server()
+            print(asteroids)
+
+            self.stub.send_msg_server("laser")
+            laser = self.stub.receive_data_server()
+            print(laser)
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_a]:
+                self.stub.send_msg_server("left")
+                player[1] = self.stub.receive_data_server()
+            if keys[pygame.K_d]:
+                self.stub.send_msg_server("right")
+                player[1] = self.stub.receive_data_server()
+            if keys[pygame.K_SPACE]:
+                self.stub.send_msg_server("up")
+                laser = self.stub.receive_data_server()
+
+            self.redraw_window(lives, asteroids, player, laser)
+
+            for asteroid in asteroids[:]:
+                if asteroid.shape().colliderect(self.shape_player(player[0], player[1])) or\
+                        asteroid.colliderect(self.shape_laser(laser[0], laser[1])):
+                    self.stub.send_msg_server("collision")
+                    self.stub.receive_msg_server()
+                    self.stub.send_data_server(asteroid)
+                    lives = self.stub.receive_msg_server()
+
+            if lives <= 0:
+                run = False
+                end_label = pygame.font.SysFont("comicsans", 60).render("Perdeu!!", 1, (255, 255, 255))
+                self.win.blit(end_label, (WIDTH / 2 - end_label.get_width() / 2, 350))
+
+
+if __name__ == "__main__":
+    stub = GameStub()
+    ui = Ui(stub)
+    ui.run()
+
+
+
+
+
+
+
+
 
 
