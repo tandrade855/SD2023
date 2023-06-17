@@ -16,7 +16,6 @@ class StubClient:
         dim = int.from_bytes(value, byteorder='big', signed=True)
         ast_dict = self.s.recv(dim)
         asteroids = json.loads(ast_dict)
-        print(asteroids)
         return asteroids
 
     def get_counter(self):
@@ -52,6 +51,14 @@ class StubClient:
         laser_dict = self.s.recv(dim)
         lasers = json.loads(laser_dict)
         return lasers
+
+    def remove_player(self, order):
+        if order == 1:
+            msg = REM_PLAYER1
+            self.s.send(msg.encode(STR_COD))
+        if order == 2:
+            msg = REM_PLAYER2
+            self.s.send(msg.encode(STR_COD))
 
     def action(self, choice):
         msg = choice

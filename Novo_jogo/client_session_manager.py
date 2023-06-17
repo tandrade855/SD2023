@@ -51,6 +51,12 @@ class ClientSession(Thread):
         self.socket_client.send(dim.to_bytes(N_BYTES, byteorder="big", signed=True))
         self.socket_client.send(msg.encode(STR_COD))
 
+    def remove_player1(self):
+        self.gm.players.pop(0)
+
+    def remove_player2(self):
+        self.gm.players.pop(1)
+
     def update_positions(self, msg):
         self.gm.update_positions(msg)
 
@@ -74,6 +80,10 @@ class ClientSession(Thread):
             self.send_player()
         if msg == ALL_PLAYERS:
             self.all_players()
+        if msg == REM_PLAYER1:
+            self.remove_player1()
+        if msg == REM_PLAYER2:
+            self.remove_player2()
         if msg == GET_AST:
             self.send_asteroids()
         if msg == GET_LASERS:

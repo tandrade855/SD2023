@@ -186,3 +186,12 @@
 2023-06-17 08:54:38,261 (INFO): a escutar no porto 5001
 2023-06-17 08:54:40,343 (INFO): o cliente com endereço ('127.0.0.1', 61171) ligou-se!
 2023-06-17 08:54:43,684 (INFO): o cliente com endereço ('127.0.0.1', 61172) ligou-se!
+2023-06-17 08:57:29,667 (INFO): a escutar no porto 5001
+2023-06-17 08:57:31,763 (INFO): o cliente com endereço ('127.0.0.1', 61197) ligou-se!
+2023-06-17 08:57:36,042 (INFO): o cliente com endereço ('127.0.0.1', 61198) ligou-se!
+2023-06-17 09:01:53,068 (INFO): a escutar no porto 5001
+2023-06-17 09:01:54,986 (INFO): o cliente com endereço ('127.0.0.1', 61202) ligou-se!
+2023-06-17 09:01:58,213 (INFO): o cliente com endereço ('127.0.0.1', 61203) ligou-se!
+2023-06-17 09:18:36,683 (INFO): a escutar no porto 5001
+2023-06-17 09:18:38,774 (INFO): o cliente com endereço ('127.0.0.1', 61212) ligou-se!
+2023-06-17 09:18:41,353 (INFO): o cliente com endereço ('127.0.0.1', 61213) ligou-se!

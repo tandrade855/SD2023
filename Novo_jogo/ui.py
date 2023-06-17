@@ -6,16 +6,16 @@ import os
 from client_stub import StubClient
 
 pygame.font.init()
-pygame.display.set_caption("Asteroid Destroyer")
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("images", "background-black.png")), (WIDTH, HEIGHT))
 
 
 class Ui:
 
-    def __init__(self, stub: StubClient):
+    def __init__(self, stub: StubClient, player_order=1):
         self.win = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Asteroid Destroyer")
         self.run = True
+        self.player_order = player_order
         self.player = Player(100 // GRID_SIZE, (NUM_ROWS - 1))
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("comicsans", 40)
@@ -72,17 +72,19 @@ class Ui:
             for player in range(len(self.players)):
                 self.players[player] = Player(self.players[player][0], self.players[player][0])
 
-            print(len(self.players))
+            print("Jogadores no jogo: ", len(self.players))
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.run = False
             self.update_positions()
 
             counter = self.stub.get_counter()
             lasers = self.stub.get_lasers()
             self.player.lasers = lasers
             asteroids = self.stub.get_asteroids()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.stub.remove_player(self.player_order)
+                    self.run = False
 
             if counter == 6:
                 self.lost = True
