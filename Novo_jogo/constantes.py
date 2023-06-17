@@ -11,7 +11,7 @@ SERVER_ADDRESS = '127.0.0.1'
 LEFT =        "left       "
 RIGHT =       "right      "
 UP =          "up         "
-END = "fim"
+END =         "end        "
 
 GET_COUNTER = "get counter"
 ADD_PLAYER =  "add player "
@@ -19,7 +19,7 @@ GET_PLAYERS = "get players"
 GET_AST    =  "get ast    "
 NR_PLAYERS  = "nr players "
 GET_LASERS =  "get lasers "
-PLAYER_MOV  = "player mov "
+ALL_PLAYERS = "all players"
 
 MSG_SIZE = 11
 N_BYTES = 2

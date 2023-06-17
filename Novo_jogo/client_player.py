@@ -56,4 +56,4 @@ class Player(Rocket):
         self.laser_img = RED_LASER
         self.mask = pygame.mask.from_surface(self.ship_img)
         self.mask = pygame.mask.from_surface(self.laser_img)
-        print(f"Starting Position: ({self.x}, {self.y})")
+        #print(f"Starting Position: ({self.x}, {self.y})")

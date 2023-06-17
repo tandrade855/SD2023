@@ -5,12 +5,13 @@ from constantes import *
 
 class GameMechanics:
 
-    def __init__(self, player= [2, 14]):
+    def __init__(self, player= []):
         self.run = True
         self.FPS = 60
         self.player_vel = 1  # Increased player velocity to make movement smoother
         self.laser_vel = 10
         self.asteroids = []
+        self.players = []
         self.num_asteroids = 5
         self.player = player
         self.lasers = []
@@ -18,6 +19,9 @@ class GameMechanics:
         self.lost = False
         self.counter = 0
         self.cool_down_counter = 0
+
+    def add_player(self, player: list):
+        self.player = player
 
     def create_asteroids(self):
         self.asteroids = []

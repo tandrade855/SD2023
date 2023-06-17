@@ -21,6 +21,7 @@ class Ui:
         self.font = pygame.font.SysFont("comicsans", 40)
         self.lost = False
         self.stub = stub
+        self.players = []
 
     def update_positions(self):
         keys = pygame.key.get_pressed()
@@ -51,9 +52,11 @@ class Ui:
             pygame.draw.rect(self.win, pygame.Color("red"), (laser_x, laser_y, GRID_SIZE // 2, GRID_SIZE // 2))
             grid_x = laser_x // GRID_SIZE  # Convert x-coordinate to grid coordinate
             grid_y = laser_y // GRID_SIZE  # Convert y-coordinate to grid coordinate
-            print(f"Laser Position: ({grid_x}, {grid_y})")  # Print laser position in grid coordinates
+            #print(f"Laser Position: ({grid_x}, {grid_y})")  # Print laser position in grid coordinates
 
         self.player.draw(self.win)
+        """for player in self.players:
+            player.draw(self.win)"""
 
         counter_text = self.font.render(f"Counter: {counter}/6", True, pygame.Color("white"))
         self.win.blit(counter_text, (10, 10))
@@ -64,6 +67,13 @@ class Ui:
         while self.run:
             player = self.stub.get_player()
             self.player = Player(player[0], player[1])
+            self.players = self.stub.get_all_players()
+
+            for player in range(len(self.players)):
+                self.players[player] = Player(self.players[player][0], self.players[player][0])
+
+            print(len(self.players))
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.run = False
@@ -73,10 +83,12 @@ class Ui:
             lasers = self.stub.get_lasers()
             self.player.lasers = lasers
             asteroids = self.stub.get_asteroids()
+
             if counter == 6:
                 self.lost = True
 
             self.redraw_window(asteroids, counter, lasers)
+
             if self.lost:
                 pygame.time.delay(2000)
                 self.run = False

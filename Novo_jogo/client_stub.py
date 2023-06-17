@@ -1,6 +1,5 @@
 import socket
 from constantes import *
-import ast
 import json
 
 
@@ -34,8 +33,16 @@ class StubClient:
         dim = int.from_bytes(value, byteorder='big', signed=True)
         player_dict = self.s.recv(dim)
         player = json.loads(player_dict)
-        print(player)
         return player
+
+    def get_all_players(self):
+        msg = ALL_PLAYERS
+        self.s.send(msg.encode(STR_COD))
+        value = self.s.recv(N_BYTES)
+        dim = int.from_bytes(value, byteorder='big', signed=True)
+        players_dict = self.s.recv(dim)
+        players = json.loads(players_dict)
+        return players
 
     def get_lasers(self):
         msg = GET_LASERS
@@ -44,7 +51,6 @@ class StubClient:
         dim = int.from_bytes(value, byteorder='big', signed=True)
         laser_dict = self.s.recv(dim)
         lasers = json.loads(laser_dict)
-        print(lasers)
         return lasers
 
     def action(self, choice):
