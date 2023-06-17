@@ -195,3 +195,6 @@
 2023-06-17 09:18:36,683 (INFO): a escutar no porto 5001
 2023-06-17 09:18:38,774 (INFO): o cliente com endereço ('127.0.0.1', 61212) ligou-se!
 2023-06-17 09:18:41,353 (INFO): o cliente com endereço ('127.0.0.1', 61213) ligou-se!
+2023-06-17 09:27:44,135 (INFO): a escutar no porto 5001
+2023-06-17 09:27:45,845 (INFO): o cliente com endereço ('127.0.0.1', 61301) ligou-se!
+2023-06-17 09:27:51,053 (INFO): o cliente com endereço ('127.0.0.1', 61302) ligou-se!
