@@ -73,6 +73,8 @@ class Ui:
             lasers = self.stub.get_lasers()
             self.player.lasers = lasers
             asteroids = self.stub.get_asteroids()
+            if counter == 6:
+                self.lost = True
 
             self.redraw_window(asteroids, counter, lasers)
             if self.lost:
@@ -84,6 +86,7 @@ class Ui:
                     print("Game Over! You didn't destroy 10 asteroids.")
 
         pygame.quit()
+        self.stub.s.close()
 
 
 

@@ -46,6 +46,12 @@ class GameMechanics:
             self.lasers.append((laser_x, laser_y))
             self.cool_down_counter = 1
 
+        if self.cool_down_counter > 0:
+            self.cool_down_counter += 1
+        if self.cool_down_counter > 5:
+            self.cool_down_counter = 0
+
+    def move_laser(self):
         for laser in self.lasers.copy():
             laser_x, laser_y = laser
             laser_y -= self.laser_vel
@@ -54,18 +60,24 @@ class GameMechanics:
             else:
                 self.lasers[self.lasers.index(laser)] = (laser_x, laser_y)
 
-        if self.cool_down_counter > 0:
-            self.cool_down_counter += 1
-        if self.cool_down_counter > 30:
-            self.cool_down_counter = 0
-
     def check_collisions(self):
+        grid_lasers = self.grid_lasers()
         for asteroid in self.asteroids[:]:
-            for laser in self.lasers:
+            for laser in grid_lasers:
                 if laser == asteroid:
                     self.asteroids.remove(asteroid)
-                    self.lasers.remove(laser)
+                    self.lasers = []
                     self.counter += 1
                     if self.counter >= 6:
                         self.lost = True
+
+    def grid_lasers(self):
+        grid_lasers = []
+        for laser in self.lasers:
+            laser_x, laser_y = laser
+            grid_x = laser_x // GRID_SIZE  # Convert x-coordinate to grid coordinate
+            grid_y = laser_y // GRID_SIZE  # Convert y-coordinate to grid coordinate
+            grid_lasers.append([grid_x, grid_y])
+            print(f"Laser Position: ({grid_x}, {grid_y})")  # Print laser position in grid coordinates
+        return grid_lasers
 

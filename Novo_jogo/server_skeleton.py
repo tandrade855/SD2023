@@ -73,6 +73,8 @@ class SkeletonServer:
 
                     self.gm.check_collisions()
 
+                    self.gm.move_laser()
+
                     data_recv: bytes = self.socket_client.recv(MSG_SIZE)
                     msg = data_recv.decode(STR_COD)
                     if msg == GET_COUNTER:
@@ -85,7 +87,6 @@ class SkeletonServer:
                         self.send_lasers()
                     if msg == LEFT or msg == RIGHT or msg == UP:
                         self.update_positions(msg)
-
 
         self.s.close()
 
