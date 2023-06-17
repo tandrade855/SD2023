@@ -1,6 +1,8 @@
 import socket
 import threading
-from Middleware.middleware import GameMiddleware
+from Middleware.middleware import GameMiddleware, Player
+from Client import *
+import pickle
 
 
 class GameStub:
@@ -9,6 +11,7 @@ class GameStub:
         self.client_socket = None
         self.middleware = GameMiddleware()
         self.player_id = None
+        self.run = False
 
     def connect(self, host, port):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,27 +19,30 @@ class GameStub:
 
         print("Connected to the server.")
 
-        receive_thread = threading.Thread(target=self.tryout)
-        receive_thread.start()
-
     def receive_data_server(self):
-        return self.middleware.player_data(self.player_id)
+        data = b"" + self.client_socket.recv(1024)
+        deserialized_object = pickle.loads(data)
+        return deserialized_object
 
     def send_data_server(self, data):
-        self.middleware.send_data(data, self.player_id)
+        serialized_object = pickle.dumps(data)
+        # Send the serialized object
+        self.client_socket.sendall(serialized_object)
 
     def send_msg_server(self, msg):
-        self.middleware.send_msg(msg, self.player_id)
+        self.client_socket.send(msg.encode())
 
     def receive_msg_server(self):
-        return self.middleware.receive_msg(self.player_id)
+        return self.client_socket.recv(1024).decode()
 
     def tryout(self):
         # get player identification
-        self.send_msg_server("get player")
-        self.player_id = self.receive_msg_server()
-
-
+        self.middleware.send_msg("player_id")
+        self.player_id = self.middleware.receive_msg()
+        print("Player id is:", self.player_id)
+        player = Player(self.client_socket, PORT, self.player_id)
+        self.middleware.add_player(player)
+        print("estou aqui no tryout. a len de players é:", len(self.middleware.players))
 
 
 

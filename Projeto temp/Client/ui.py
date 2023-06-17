@@ -138,10 +138,11 @@ class Ui:
         pygame.display.update()
 
     def run(self):
-        print(self.stub.player_id)
+        print("estou aqui no run")
         # sending sprite image info to the server
         self.stub.send_data_server([self.player_img.get_width(), self.player_img.get_height()])
-        self.stub.receive_msg_server()
+        m = self.stub.receive_msg_server()
+        print(m)
 
         run = True
         while run:
