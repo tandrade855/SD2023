@@ -21,10 +21,16 @@ class GameMechanics:
         self.cool_down_counter = 0
 
     def add_player(self, player: list):
+        """
+        Adiciona um player à lista
+        """
         self.player = player
         self.players.append(player)
 
     def create_asteroids(self):
+        """
+        Cria uma lista de asteroides em posições aleatórias (5 asteroides)
+        """
         self.asteroids = []
         for _ in range(self.num_asteroids):
             x = random.randint(0, NUM_COLS - 1)
@@ -33,8 +39,15 @@ class GameMechanics:
             self.asteroids.append(asteroid)
             print(f"Asteroid Position: ({asteroid[0]}, {asteroid[1]})")
 
+
     def update_positions(self, direction: str, player: int):
         self.player = self.players[player]
+
+    def update_positions(self, direction: str, player_pos=0):
+        """
+        Faz update das posições dos players na grid.
+        O cool_down_counter é utilizado para controlar o número de lasers disparados pelo jogador
+        """
         grid_x = self.player[0]
         grid_y = self.player[1]
 
@@ -58,6 +71,9 @@ class GameMechanics:
             self.cool_down_counter = 0
 
     def move_laser(self):
+        """
+        Controla a posição do laser na grid e a sua velocidade
+        """
         for laser in self.lasers.copy():
             laser_x, laser_y = laser
             laser_y -= self.laser_vel
@@ -67,6 +83,9 @@ class GameMechanics:
                 self.lasers[self.lasers.index(laser)] = (laser_x, laser_y)
 
     def check_collisions(self):
+        """
+        Faz a verificação se existiu colisão entre o laser e o asteroide
+        """
         grid_lasers = self.grid_lasers()
         for asteroid in self.asteroids[:]:
             for laser in grid_lasers:
@@ -78,12 +97,15 @@ class GameMechanics:
                         self.lost = True
 
     def grid_lasers(self):
+        """
+        Devolve as posições do laser na grid
+        """
         grid_lasers = []
         for laser in self.lasers:
             laser_x, laser_y = laser
-            grid_x = laser_x // GRID_SIZE  # Convert x-coordinate to grid coordinate
-            grid_y = laser_y // GRID_SIZE  # Convert y-coordinate to grid coordinate
+            grid_x = laser_x // GRID_SIZE  # Converte coordenada x para coordenadas da grid
+            grid_y = laser_y // GRID_SIZE  # Converte coordenada y para coordenadas da grid
             grid_lasers.append([grid_x, grid_y])
-            print(f"Laser Position: ({grid_x}, {grid_y})")  # Print laser position in grid coordinates
+            print(f"Laser Position: ({grid_x}, {grid_y})")  #Faz print das coordenadas do laser para coordenadas da grid
         return grid_lasers
 

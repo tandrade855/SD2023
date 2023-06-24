@@ -49,6 +49,9 @@ class Ui:
             pygame.draw.line(self.win, pygame.Color("white"), (0, y), (WIDTH, y))
 
     def redraw_window(self, asteroids, counter, lasers):
+        """
+        Esta função desenha todos os elementos na janela
+        """
         self.win.blit(BACKGROUND, (0, 0))
 
         self.draw_grid()  # Draw the grid
