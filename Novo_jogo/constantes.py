@@ -11,6 +11,15 @@ SERVER_ADDRESS = '127.0.0.1'
 LEFT =        "left       "
 RIGHT =       "right      "
 UP =          "up         "
+
+LEFT1 =        "left1      "
+RIGHT1 =       "right1     "
+UP1 =          "up1        "
+
+LEFT2 =        "left2      "
+RIGHT2 =       "right2     "
+UP2 =          "up2        "
+
 END =         "end        "
 
 GET_COUNTER = "get counter"

@@ -33,8 +33,8 @@ class GameMechanics:
             self.asteroids.append(asteroid)
             print(f"Asteroid Position: ({asteroid[0]}, {asteroid[1]})")
 
-    def update_positions(self, direction: str, player_pos=0):
-
+    def update_positions(self, direction: str, player: int):
+        self.player = self.players[player]
         grid_x = self.player[0]
         grid_y = self.player[1]
 

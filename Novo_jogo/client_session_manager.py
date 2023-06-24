@@ -5,8 +5,6 @@ import json
 import logging
 import socket
 
-# shr: shared.SharedServerState,
-
 
 class ClientSession(Thread):
     """Maintains a session with the client"""
@@ -57,11 +55,17 @@ class ClientSession(Thread):
     def remove_player2(self):
         self.gm.players.pop(1)
 
-    def update_positions(self, msg):
-        self.gm.update_positions(msg)
+    def update_positions(self, msg, player: int):
+        if msg == LEFT1 or msg == LEFT2:
+            msg = LEFT
+        if msg == RIGHT1 or msg == RIGHT2:
+            msg = RIGHT
+        if msg == UP1 or msg == UP2:
+            msg = UP
+
+        self.gm.update_positions(msg, player)
 
     def msg_dispatcher(self, socket_client) -> bool:
-        print(self.gm.players)
         end = False
         self.gm.clock.tick(self.gm.FPS)
 
@@ -88,8 +92,10 @@ class ClientSession(Thread):
             self.send_asteroids()
         if msg == GET_LASERS:
             self.send_lasers()
-        if msg == LEFT or msg == RIGHT or msg == UP:
-            self.update_positions(msg)
+        if msg == LEFT1 or msg == RIGHT1 or msg == UP1:
+            self.update_positions(msg, 0)
+        if msg == LEFT2 or msg == RIGHT2 or msg == UP2:
+            self.update_positions(msg, 1)
         if msg == END:
             socket_client.send(END.encode(STR_COD))
             end = True

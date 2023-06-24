@@ -37,14 +37,13 @@ class SkeletonServer:
         while self.keep_running:
             self.socket_client = self.accept()
             if self.socket_client is not None:
-                print("Game Started. Players in game: ", len(self.players))
-                print(self.player_positions)
 
                 self.gm.add_player(self.player_positions[0])
 
                 self.players.append(self.player_positions[0])
                 self.player_positions.remove(self.player_positions[0])
 
+                print("Game Started. Players in game: ", len(self.players))
                 ClientSession(self.socket_client, self.gm).start()
 
         self.s.close()

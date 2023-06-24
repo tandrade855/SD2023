@@ -4,6 +4,7 @@ from client_player import Player
 from client_asteroid import Asteroid
 import os
 from client_stub import StubClient
+import time
 
 pygame.font.init()
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("images", "background-black.png")), (WIDTH, HEIGHT))
@@ -26,11 +27,20 @@ class Ui:
     def update_positions(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            self.stub.action(LEFT)
+            if self.player_order == 1:
+                self.stub.action(LEFT1)
+            elif self.player_order == 2:
+                self.stub.action(LEFT2)
         if keys[pygame.K_d]:
-            self.stub.action(RIGHT)
+            if self.player_order == 1:
+                self.stub.action(RIGHT1)
+            elif self.player_order == 2:
+                self.stub.action(RIGHT2)
         if keys[pygame.K_SPACE]:
-            self.stub.action(UP)
+            if self.player_order == 1:
+                self.stub.action(UP1)
+            elif self.player_order == 2:
+                self.stub.action(UP2)
 
     def draw_grid(self):
         for x in range(0, WIDTH, GRID_SIZE):
@@ -52,9 +62,7 @@ class Ui:
             pygame.draw.rect(self.win, pygame.Color("red"), (laser_x, laser_y, GRID_SIZE // 2, GRID_SIZE // 2))
             grid_x = laser_x // GRID_SIZE  # Convert x-coordinate to grid coordinate
             grid_y = laser_y // GRID_SIZE  # Convert y-coordinate to grid coordinate
-            #print(f"Laser Position: ({grid_x}, {grid_y})")  # Print laser position in grid coordinates
 
-        #self.player.draw(self.win)
         for player in self.players:
             player.draw(self.win)
 
@@ -66,16 +74,16 @@ class Ui:
     def run_game(self):
         player = self.stub.get_player()
         self.player = Player(player[0], player[1])
+        self.players = self.stub.get_all_players()
+        self.player_order = len(self.players)
+
         while self.run:
             self.players = self.stub.get_all_players()
-            #print(self.player.x, self.player.y)
             for player in range(len(self.players)):
                 self.players[player] = Player(self.players[player][0], self.players[player][1])
-                print(self.players[player].x, self.players[player].y)
-
-            #print("Jogadores no jogo: ", len(self.players))
 
             self.update_positions()
+            time.sleep(0.05)
 
             counter = self.stub.get_counter()
             lasers = self.stub.get_lasers()
