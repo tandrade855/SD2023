@@ -21,6 +21,7 @@ REM_PLAYER1=  "rem player1"
 REM_PLAYER2=  "rem player2"
 GET_LASERS =  "get lasers "
 ALL_PLAYERS = "all players"
+START       = "start      "
 
 MSG_SIZE = 11
 N_BYTES = 2

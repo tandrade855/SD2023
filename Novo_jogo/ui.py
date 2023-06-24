@@ -11,7 +11,7 @@ BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("images", "ba
 
 class Ui:
 
-    def __init__(self, stub: StubClient, player_order=1):
+    def __init__(self, stub: StubClient, player_order=0):
         self.win = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Asteroid Destroyer")
         self.run = True
@@ -54,9 +54,9 @@ class Ui:
             grid_y = laser_y // GRID_SIZE  # Convert y-coordinate to grid coordinate
             #print(f"Laser Position: ({grid_x}, {grid_y})")  # Print laser position in grid coordinates
 
-        self.player.draw(self.win)
-        """for player in self.players:
-            player.draw(self.win)"""
+        #self.player.draw(self.win)
+        for player in self.players:
+            player.draw(self.win)
 
         counter_text = self.font.render(f"Counter: {counter}/6", True, pygame.Color("white"))
         self.win.blit(counter_text, (10, 10))
@@ -64,15 +64,16 @@ class Ui:
         pygame.display.update()
 
     def run_game(self):
+        player = self.stub.get_player()
+        self.player = Player(player[0], player[1])
         while self.run:
-            player = self.stub.get_player()
-            self.player = Player(player[0], player[1])
             self.players = self.stub.get_all_players()
-
+            #print(self.player.x, self.player.y)
             for player in range(len(self.players)):
-                self.players[player] = Player(self.players[player][0], self.players[player][0])
+                self.players[player] = Player(self.players[player][0], self.players[player][1])
+                print(self.players[player].x, self.players[player].y)
 
-            print("Jogadores no jogo: ", len(self.players))
+            #print("Jogadores no jogo: ", len(self.players))
 
             self.update_positions()
 

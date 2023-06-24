@@ -63,3 +63,10 @@ class StubClient:
     def action(self, choice):
         msg = choice
         self.s.send(msg.encode(STR_COD))
+
+    def start(self):
+        msg = START
+        self.s.send(msg.encode(STR_COD))
+        data_recv = self.s.recv(N_BYTES)
+        start = int.from_bytes(data_recv, byteorder="big", signed=True)
+        return start

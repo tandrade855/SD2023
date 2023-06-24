@@ -41,7 +41,6 @@ class SkeletonServer:
                 print(self.player_positions)
 
                 self.gm.add_player(self.player_positions[0])
-                self.gm.players.append(self.player_positions[0])
 
                 self.players.append(self.player_positions[0])
                 self.player_positions.remove(self.player_positions[0])

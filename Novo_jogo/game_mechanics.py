@@ -22,6 +22,7 @@ class GameMechanics:
 
     def add_player(self, player: list):
         self.player = player
+        self.players.append(player)
 
     def create_asteroids(self):
         self.asteroids = []
@@ -32,7 +33,8 @@ class GameMechanics:
             self.asteroids.append(asteroid)
             print(f"Asteroid Position: ({asteroid[0]}, {asteroid[1]})")
 
-    def update_positions(self, direction: str):
+    def update_positions(self, direction: str, player_pos=0):
+
         grid_x = self.player[0]
         grid_y = self.player[1]
 

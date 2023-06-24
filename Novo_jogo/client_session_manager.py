@@ -61,7 +61,7 @@ class ClientSession(Thread):
         self.gm.update_positions(msg)
 
     def msg_dispatcher(self, socket_client) -> bool:
-
+        print(self.gm.players)
         end = False
         self.gm.clock.tick(self.gm.FPS)
 
